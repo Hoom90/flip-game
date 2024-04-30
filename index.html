@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flip-game</title>
+    <style>
+        @font-face {
+            font-family: vazirmtn;
+            src: url('/font/Vazirmatn-VariableFont_wght.ttf');
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            font-family: vazirmtn;
+        }
+
+        .container {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .wrapper {
+            width: 450px;
+            display: grid;
+            gap: 30px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 800;
+            font-size: 20px;
+        }
+
+        .card-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            color: white;
+        }
+
+        .card {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            transition: transform 0.8s;
+            transform-style: preserve-3d;
+            cursor: pointer;
+        }
+
+        .card-rotate{
+            transform: rotateY(180deg);            
+        }
+
+        .card img {
+            width: 100px;
+            border-radius: 5px;
+            border: 2px solid #d44057;
+        }
+
+        .front {
+            border-radius: 5px;
+            background-color: #d44057;
+            box-shadow: inset 0px 1px 5px 0px #3c3b3b;
+        }
+
+        .back {
+            transform: rotateY(180deg);
+        }
+
+        .front,
+        .back {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+        }
+
+        .front div {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="wrapper">
+            <div class="header">
+                <p>زمان: <span id="timer">2:00</span></p>
+                <p>تعداد حرکت : <span id="counter">0</span></p>
+            </div>
+            <div class="card-container" id="cards">
+                <!-- <div class="card">
+                    <div class="front">
+                        <div>
+                            <p>1</p>
+                        </div>
+                    </div>
+                    <div class="back">
+                        <img src="./assets/images/product-1.jpg">
+                    </div>
+                </div> -->
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    const data = [
+        {
+            id: 1,
+            image: './assets/images/product-4.jpg',
+        },
+        {
+            id: 2,
+            image: './assets/images/product-1.jpg',
+        },
+        {
+            id: 3,
+            image: './assets/images/product-2.jpg',
+        },
+        {
+            id: 4,
+            image: './assets/images/product-2.jpg',
+        },
+        {
+            id: 5,
+            image: './assets/images/product-3.jpg',
+        },
+        {
+            id: 6,
+            image: './assets/images/product-6.jpg',
+        },
+        {
+            id: 7,
+            image: './assets/images/product-4.jpg',
+        },
+        {
+            id: 8,
+            image: './assets/images/product-5.jpg',
+
+        },
+        {
+            id: 9,
+            image: './assets/images/product-3.jpg',
+
+        },
+        {
+            id: 10,
+            image: './assets/images/product-6.jpg',
+        },
+        {
+            id: 11,
+            image: './assets/images/product-5.jpg',
+
+        },
+        {
+            id: 12,
+            image: './assets/images/product-7.jpg',
+
+        },
+        {
+            id: 13,
+            image: './assets/images/product-7.jpg',
+
+        },
+        {
+            id: 14,
+            image: './assets/images/product-1.jpg',
+
+        },
+        {
+            id: 15,
+            image: './assets/images/product-8.jpg',
+
+        },
+        {
+            id: 16,
+            image: './assets/images/product-8.jpg',
+
+        },
+
+
+    ]
+    let counter = 40
+    let cardOpen = []
+    
+    const init = () => {
+        document.querySelector('#counter').innerText = counter
+        // const temp = []
+        // for(let i=0;i<8;i++){
+        //     const randomnumber =Math.floor(Math.random() * 8) + 1;
+        //     temp.push(data[randomnumber])
+        // }
+        let temp = []
+        data.forEach(item => {
+            temp += `
+                <div class="card" id="card${item.id}" onclick="myFunc(${item.id})">
+                    <div class="front">
+                        <div>
+                            <p>${item.id}</p>
+                        </div>
+                    </div>
+                    <div class="back">
+                        <img src="${item.image}">
+                    </div>
+                </div>
+            `
+        });
+        document.querySelector('#cards').innerHTML = temp
+    }
+
+    const myFunc = (id) =>{
+        if(document.querySelector(`#card${id}`).className.includes('card-rotate')){
+            document.querySelector(`#card${id}`).classList.remove('card-rotate')
+        }
+        else{
+            cardClickCounter(id)
+            document.querySelector('#counter').innerText = counter
+            document.querySelector(`#card${id}`).classList.add('card-rotate')
+        }
+        
+    }
+
+    const cardClickCounter = (id) =>{
+
+        if(cardOpen.length != 2){
+            counter--
+            cardOpen.push(id)
+        }else{
+            cardOpen.forEach(item => {
+                document.querySelector(`#card${item}`).classList.remove('card-rotate')
+            });
+            cardOpen = []
+        }
+    }
+    init()
+</script>
+
+</html>
